@@ -1,0 +1,35 @@
+package ru.rti.ke;
+
+import java.awt.HeadlessException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+public class ServerMain implements Runnable{
+	
+	static private ServerSocket server;
+	static String ipAdress;
+	static private ObjectOutputStream output;
+	static private Socket connection;
+	static private ObjectInputStream input;
+
+	public void run() { //run class
+		try{	
+			server = new ServerSocket(5678, 10);
+		while (true) {
+			System.out.println("Сервер запущен!");
+			connection = server.accept();
+			output = new ObjectOutputStream(connection.getOutputStream());
+			input = new ObjectInputStream(connection.getInputStream());
+			output.writeObject("Вы прислали: " + (String)input.readObject());
+			}
+		}	catch (UnknownHostException e) {
+		}	catch (IOException e ) {
+		} 	catch (HeadlessException e) {
+		}	catch (ClassNotFoundException e) {}
+	}
+}
+
